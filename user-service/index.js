@@ -2,6 +2,8 @@ const { getGrpcServer, startGrpcServer } = require("./grpc");
 const protoLoader = require("@grpc/proto-loader");
 const grpc = require("@grpc/grpc-js");
 const PROTO_PATH = __dirname + "/user.proto";
+const db = require("./config/db");
+db.connect();
 // Convert the proto file to a package definition "Javascript Object"
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
