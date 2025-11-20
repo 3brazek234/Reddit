@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+message User {
+    string username = 1;
+    string email = 2;
+    string password = 3; // ملاحظة مهمة: الـ password هنا يجب أن تكون hashed
+    int32 id = 4;
+}
+
+message CreateUserRequest { // 🚨 ملاحظة: عدلت CreateUserRequst لـ CreateUserRequest (Standard Naming)
+    User user = 1;
+}
+
+message CreateUserResponse {
+    int32 id = 1;
+}
+
+message GetUserRequest { // 🚨 ملاحظة: عدلت GetUserRequst لـ GetUserRequest (Standard Naming)
+    int32 id = 1;
+}
+
+message GetUserResponse {
+    User user = 2; // 🚨 ملاحظة: الـ field number هنا 2، لازم يكون 1 لو ده أول field
+}
+
+message CreateTokenRequest {
+    User user = 1; // 🚨 ملاحظة: هنا غالباً هتحتاج username/email و password بس، مش كل الـ User object
+}
+
+message CreateTokenResponse {
+    string token = 1;
+}
+
+message IsAuthenticatedRequest {
+    string token = 1;
+}
+
+message IsAuthenticatedResponse {
+    User user = 1;
+    bool ok = 2; // غالباً ok هي نفسها status أو boolean indicates success
+}
+
+service UserService {
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {};
+    rpc GetUser(GetUserRequest) returns (GetUserResponse) {};
+    rpc CreateToken(CreateTokenRequest) returns (CreateTokenResponse) {};
+    rpc IsAuthenticated(IsAuthenticatedRequest) returns (IsAuthenticatedResponse) {};
+}
