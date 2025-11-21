@@ -19,4 +19,3 @@ exports.startGrpcServer = function () {
 exports.getGrpcServer = function () {
   return server;
 };
-console.log("PROTO_PATH:", PROTO_PATH);
