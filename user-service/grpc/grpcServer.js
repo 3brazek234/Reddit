@@ -1,4 +1,4 @@
-const PROTO_PATH = __dirname + "/user.proto";
+// grpc/grpcServer.js
 const grpc = require("@grpc/grpc-js");
 const server = new grpc.Server();
 
@@ -8,14 +8,15 @@ exports.startGrpcServer = function () {
     grpc.ServerCredentials.createInsecure(),
     (error, port) => {
       if (error) {
-        console.log(error);
+        console.error("Failed to bind gRPC server:", error);
       } else {
-        console.log("server is running");
+        console.log(`gRPC server running at http://127.0.0.1:${port}`);
         server.start();
       }
     }
   );
 };
+
 exports.getGrpcServer = function () {
   return server;
 };

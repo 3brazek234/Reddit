@@ -1,0 +1,52 @@
+syntax = "proto3";
+message User {
+    string username = 1;
+    string email = 2;
+    int32 id = 3; 
+}
+
+message CreateUserRequest {
+    string username = 1;
+    string email = 2;
+    string password = 3; 
+}
+
+message CreateUserResponse {
+    int32 id = 1;
+}
+
+message GetUserRequest {
+    int32 id = 1;
+}
+
+message GetUserResponse {
+    User user = 1; 
+}
+
+message CreateTokenRequest {
+    string email = 1;    
+    string password = 2;
+}
+
+message CreateTokenResponse {
+    string token = 1;
+}
+
+message IsAuthenticatedRequest {
+    string token = 1;
+}
+
+message IsAuthenticatedResponse {
+    // You might return a simplified user object here
+    int32 id = 1;
+    string email = 2;
+    string username = 3;
+    bool authenticated = 4; // Use a more descriptive name than 'ok'
+}
+
+service UserService {
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {};
+    rpc GetUser(GetUserRequest) returns (GetUserResponse) {};
+    rpc CreateToken(CreateTokenRequest) returns (CreateTokenResponse) {};
+    rpc IsAuthenticated(IsAuthenticatedRequest) returns (IsAuthenticatedResponse) {};
+}

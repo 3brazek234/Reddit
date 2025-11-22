@@ -2,7 +2,7 @@
 const { Pool } = require("pg");
 require("dotenv").config();
 
-const pool = new Pool({
+const db = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
@@ -13,12 +13,12 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
 });
 
-pool.on("connect", () => {
+db.on("connect", () => {
   console.log("Connected to the PostgreSQL database!");
 });
 
-pool.on("error", (err) => {
+db.on("error", (err) => {
   console.error("Error connecting to the PostgreSQL database:", err.message);
 });
 
-module.exports = pool;
+module.exports = db;
