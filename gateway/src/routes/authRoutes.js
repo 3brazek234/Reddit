@@ -1,7 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 const authController = require("../controllers/authController");
-const { signupSchema } = require("../validtion/schemas");
+const { signupSchema, loginSchema } = require("../validtion/schemas");
 const validateRequest = require("../middlewares/validator");
 
 const router = express.Router();
@@ -10,5 +10,5 @@ router.post(
   validateRequest(signupSchema, "body"),
   authController.signup
 );
-router.post("/login", authController.login);
+router.post("/login",  validateRequest(loginSchema, "body"), authController.login);
 module.exports = router;

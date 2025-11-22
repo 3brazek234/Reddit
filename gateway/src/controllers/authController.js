@@ -27,11 +27,14 @@ exports.signup = (req, res) => {
   });
 };
 exports.login = (req, res) => {
+  const { email, password } = req.body;
+  
   const payload = {
-    user: req.body,
+    email,
+    password,
   };
 
-  userClient.LoginUser(payload, (error, response) => {
+  userClient.createToken(payload, (error, response) => {
     if (error) {
       console.error("gRPC Error:", error.details || error.message);
       let statusCode = 500;
