@@ -50,7 +50,13 @@ const userImplementation = {
       );
 
       if (rows.length > 0) {
-        callback(null, { user: rows[0] });
+        callback(null, {
+          user: {
+            id: rows[0].id,
+            username: rows[0].username,
+            email: rows[0].email,
+          },
+        });
       } else {
         return callback({
           code: grpc.status.NOT_FOUND,

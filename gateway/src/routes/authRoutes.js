@@ -10,5 +10,10 @@ router.post(
   validateRequest(signupSchema, "body"),
   authController.signup
 );
-router.post("/login",  validateRequest(loginSchema, "body"), authController.login);
+router.post(
+  "/login",
+  validateRequest(loginSchema, "body"),
+  authController.login
+);
+router.get("/user/:id", authController.getUser);
 module.exports = router;

@@ -28,7 +28,7 @@ exports.signup = (req, res) => {
 };
 exports.login = (req, res) => {
   const { email, password } = req.body;
-  
+
   const payload = {
     email,
     password,
@@ -47,6 +47,28 @@ exports.login = (req, res) => {
       });
     }
 
+    res.status(200).json({
+      success: true,
+      data: response,
+    });
+  });
+};
+exports.getUser = (req, res) => {
+  const userId = req.params.id;
+  if (!userId) {
+    return res.status(400).json({
+      success: false,
+      message: "User ID is required",
+    });
+  }
+  const payload = { id: userId };
+
+  userClient.getUser(payload, (error, response) => {
+    if (error) {
+      console.error("gRPC Error:", error.details || error.message);
+      let statusCode = 500;
+      if (error.code === 5) statusCode = 404;
+    }
     res.status(200).json({
       success: true,
       data: response,
