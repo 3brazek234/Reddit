@@ -1,4 +1,5 @@
-syntax = 'proto3'
+syntax = 'proto3';
+package post;
 message Post {
     int32 id = 1,
     string title = 2,

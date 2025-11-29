@@ -22,9 +22,13 @@ const SubredditSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  creator_id: {
+    type: Number,
+    required: true,
+  },
   subscribers_count: {
     type: Number,
-    default: 0
+    default: 0,
   },
 });
 const SubredditUserSchema = new Schema({

@@ -128,7 +128,6 @@ message GetSubredditPostsResponse {
 }
 
 
-// تعريف خدمة Subreddit
 service SubredditService {
     // إدارة المجتمعات
     rpc CreateSubreddit(CreateSubredditRequest) returns (CreateSubredditResponse);
@@ -137,11 +136,9 @@ service SubredditService {
     rpc DeleteSubreddit(DeleteSubredditRequest) returns (DeleteSubredditResponse);
     rpc ListSubreddits(ListSubredditsRequest) returns (ListSubredditsResponse);
 
-    // الاشتراك
     rpc Subscribe(SubscribeRequest) returns (SubscribeResponse);
     rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse);
 
-    // المنشورات داخل المجتمع
     rpc CreatePost(CreatePostRequest) returns (CreatePostResponse);
     rpc GetSubredditPosts(GetSubredditPostsRequest) returns (GetSubredditPostsResponse);
 }
