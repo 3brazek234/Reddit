@@ -1,4 +1,3 @@
-// index.js
 const { getGrpcServer, startGrpcServer } = require("./grpc/grpcServer");
 const protoLoader = require("@grpc/proto-loader");
 const grpc = require("@grpc/grpc-js");
@@ -6,28 +5,29 @@ const path = require("path");
 const db = require("./config/db");
 const userImplementation = require("./grpc/userService");
 
-const PROTO_PATH = path.join(__dirname, "proto/user.proto"); // Note the path change
+const PROTO_PATH = path.join(__dirname, "proto/user.proto");
 
 // 1. Connect to DB
 db.connect()
   .then(() => console.log("Connected to database successfully."))
   .catch((err) => {
     console.error("Failed to connect to database:", err);
-    process.exit(1); // Exit if DB connection fails
+    process.exit(1);
   });
 
-// 2. Load Proto definition
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-  keepCase: true,
+  keepCase: false, 
   longs: String,
   defaults: true,
   oneofs: true,
 });
-const user_proto = grpc.loadPackageDefinition(packageDefinition).UserService.service; // Get the service definition
 
-// 3. Start gRPC server and add the service
+const user_package = grpc.loadPackageDefinition(packageDefinition);
+
+const userServiceDefinition = user_package.user.UserService.service;
 startGrpcServer();
 const server = getGrpcServer();
-server.addService(user_proto, userImplementation);
+
+server.addService(userServiceDefinition, userImplementation);
 
 console.log("gRPC server initialized with UserService.");

@@ -12,7 +12,9 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { formSchema } from "@/lib/validation";
-
+import { userApi } from "@/services/api";
+import toast from "react-hot-toast";
+import useAuthStore from "@/store/store";
 const Login = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -22,8 +24,14 @@ const Login = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const response = await userApi.login(values.email, values.password);
+    if (response.success) {
+      toast.success(response.message);
+      useAuthStore.setState({ isAuthenticated: true });
+    } else {
+      toast.error(response.message);
+    }
   }
 
   return (
@@ -56,7 +64,6 @@ const Login = () => {
               </FormItem>
             )}
           />
-          {/* Add a submit button */}
           <button
             type="submit"
             className="bg-primary text-white p-2 rounded w-full"

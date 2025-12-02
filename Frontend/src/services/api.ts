@@ -1,5 +1,4 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+const apiUrl = import.meta.env.VITE_API_URL;
 import axios from "axios";
 // Types matching your ERD
 export interface User {
@@ -37,7 +36,7 @@ export interface SubredditUser {
   user_id: number;
 }
 export const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: apiUrl || "http://localhost:3001",
   headers: {
     "Content-Type": "application/json",
   },
@@ -47,9 +46,17 @@ export const userApi = {
   async login(
     email: string,
     password: string
-  ): Promise<{ user: User; token: string }> {
+  ): Promise<{
+    success: boolean;
+    message: string;
+    data: { user: User; token: string };
+  }> {
     const response = await api.post("/auth/login", { email, password });
-    return response.data;
+    return {
+      success: response.data.success,
+      message: response.data.message,
+      data: response.data.data,
+    };
   },
 
   async register(userData: Partial<User>): Promise<User> {
@@ -92,13 +99,10 @@ export const postApi = {
   },
 };
 
-  // Comment API
+// Comment API
 export const commentApi = {
   async getComments(postId: number): Promise<Comment[]> {
     const response = await api.get(`/posts/${postId}/comments`);
     return response.data;
   },
 };
-
-
-

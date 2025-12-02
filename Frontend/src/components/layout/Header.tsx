@@ -57,8 +57,7 @@ export const Header = () => {
                 {/* نضع Tabs كحاوية رئيسية داخل DialogContent */}
                 <Tabs defaultValue="login" className="w-full">
                   <DialogHeader>
-                    <DialogTitle>Account Access</DialogTitle>{" "}
-                    {/* عنوان للنافذة */}
+                   
                     <TabsList className="grid w-full grid-cols-2 mt-4">
                       <TabsTrigger value="login">Login</TabsTrigger>
                       <TabsTrigger value="register">Register</TabsTrigger>

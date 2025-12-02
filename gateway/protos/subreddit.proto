@@ -2,17 +2,15 @@ syntax = "proto3";
 
 package subreddit;
 
-// تعريف رسالة Subreddit
 message Subreddit {
-    string id = 1; // معرف فريد للمجتمع (UUID أو String)
-    string name = 2; // اسم المجتمع (يجب أن يكون فريدًا)
-    string description = 3; // وصف المجتمع
-    int64 created_at = 5; // تاريخ ووقت الإنشاء (Unix timestamp)
-    int32 subscribers_count = 6; // عدد المشتركين
+    string id = 1; 
+    string name = 2; 
+    string description = 3; 
+    int64 created_at = 5; 
+    int32 subscribers_count = 6; 
     int32 creator_id = 7;
 }
 
-// تعريف رسالة Post (للاستخدام داخل Subreddit)
 message Post {
     string id = 1;
     string title = 2;
@@ -21,11 +19,10 @@ message Post {
     string subreddit_id = 5;
     int64 created_at = 6;
     int32 likes_count = 7; 
-    int32 comments_count = 8; // عدد التعليقات (اختياري، يمكن حسابه منفصلاً)
+    int32 comments_count = 8; 
 }
 
 
-// إنشاء مجتمع جديد
 message CreateSubredditRequest {
     string name = 1;
     string description = 2;
@@ -37,7 +34,7 @@ message CreateSubredditResponse {
 }
 
 message GetSubredditRequest {
-    string id = 1; // يمكن البحث بالمعرف
+    string id = 1;
 }
 
 message GetSubredditResponse {
@@ -65,7 +62,6 @@ message DeleteSubredditResponse {
     string message = 2;
 }
 
-// الاشتراك في مجتمع
 message SubscribeRequest {
     string user_id = 1;
     string subreddit_id = 2;
@@ -76,7 +72,6 @@ message SubscribeResponse {
     string message = 2;
 }
 
-// إلغاء الاشتراك
 message UnsubscribeRequest {
     string user_id = 1;
     string subreddit_id = 2;
@@ -87,21 +82,19 @@ message UnsubscribeResponse {
     string message = 2;
 }
 
-// الحصول على قائمة المجتمعات (مع إمكانية الفلترة والترتيب)
 message ListSubredditsRequest {
-    int32 page = 1; // رقم الصفحة
-    int32 page_size = 2; // عدد العناصر في الصفحة
-    string sort_by = 3; // الترتيب حسب (مثلاً: "created_at", "subscribers_count")
-    string order = 4; // اتجاه الترتيب ("asc" أو "desc")
-    string search_query = 5; // البحث بالاسم أو الوصف
+    int32 page = 1; 
+    int32 page_size = 2; 
+    string sort_by = 3;
+    string order = 4; 
+    string search_query = 5; 
 }
 
 message ListSubredditsResponse {
     repeated Subreddit subreddits = 1;
-    int32 total_count = 2; // العدد الإجمالي للمجتمعات
+    int32 total_count = 2; 
 }
 
-// إنشاء منشور في مجتمع
 message CreatePostRequest {
     string title = 1;
     string content = 2;
@@ -113,12 +106,11 @@ message CreatePostResponse {
     Post post = 1;
 }
 
-// الحصول على منشورات مجتمع معين
 message GetSubredditPostsRequest {
     string subreddit_id = 1;
     int32 page = 2;
     int32 page_size = 3;
-    string sort_by = 4; // مثلاً: "created_at", "likes_count"
+    string sort_by = 4; 
     string order = 5;
 }
 
@@ -129,7 +121,6 @@ message GetSubredditPostsResponse {
 
 
 service SubredditService {
-    // إدارة المجتمعات
     rpc CreateSubreddit(CreateSubredditRequest) returns (CreateSubredditResponse);
     rpc GetSubreddit(GetSubredditRequest) returns (GetSubredditResponse);
     rpc UpdateSubreddit(UpdateSubredditRequest) returns (UpdateSubredditResponse);

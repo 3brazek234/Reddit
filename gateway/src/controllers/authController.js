@@ -1,4 +1,5 @@
-const userClient = require("../grpcClient");
+const { date } = require("joi");
+const { userClient } = require("../grpcClient");
 
 exports.signup = (req, res) => {
   const { username, email, password } = req.body;
@@ -9,8 +10,7 @@ exports.signup = (req, res) => {
   };
 
   console.log("Sending gRPC CreateUser request:", payload);
-
-  userClient.CreateUser(payload, (error, response) => {
+  userClient.createUser(payload, (error, response) => {
     if (error) {
       console.error("gRPC Error:", error.details || error.message);
       let statusCode = 500;
@@ -33,7 +33,6 @@ exports.login = (req, res) => {
     email,
     password,
   };
-
   userClient.createToken(payload, (error, response) => {
     if (error) {
       console.error("gRPC Error:", error.details || error.message);
@@ -44,12 +43,14 @@ exports.login = (req, res) => {
       return res.status(statusCode).json({
         success: false,
         message: error.details || error.message,
+        data: null,
       });
     }
 
     res.status(200).json({
       success: true,
       data: response,
+      message: "Login successful",
     });
   });
 };

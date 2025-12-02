@@ -3,7 +3,8 @@ package user;
 message User {
     string username = 1;
     string email = 2;
-    int32 id = 3; 
+    string profile-image = 3;
+    int32 id = 4; 
 }
 
 message CreateUserRequest {
@@ -31,8 +32,17 @@ message CreateTokenRequest {
 
 message CreateTokenResponse {
     string token = 1;
+     User user = 2 ;
 }
+message UpdateUserProfileRequest {
+     string username = 1;
+     string password = 2;
+     string profile-image = 3;
 
+}
+message UpdateUserProfileResponse {
+    User user = 1;
+}
 message IsAuthenticatedRequest {
     string token = 1;
 }
