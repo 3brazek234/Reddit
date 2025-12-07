@@ -18,6 +18,7 @@ const Register = () => {
       email: "",
       password: "",
       username: "",
+      image: "",
     },
   });
 
@@ -62,6 +63,19 @@ const Register = () => {
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter your password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Image</FormLabel>
+                <FormControl>
+                  <Input type="file" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

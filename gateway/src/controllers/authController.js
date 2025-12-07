@@ -3,10 +3,12 @@ const { userClient } = require("../grpcClient");
 
 exports.signup = (req, res) => {
   const { username, email, password } = req.body;
+  const image = req.file
   const payload = {
     username,
     email,
     password,
+    image
   };
 
   console.log("Sending gRPC CreateUser request:", payload);
