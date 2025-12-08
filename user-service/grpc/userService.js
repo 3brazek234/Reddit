@@ -152,6 +152,39 @@ const userImplementation = {
       });
     }
   },
+  UpdatePicture: async (call, callback) => {
+    const { userid, img } = call.request;
+ try {
+    const { rows, rowCount } = await db.query(
+      `UPDATE users SET profile_image = $1 WHERE id = $2 RETURNING *`,
+      [img, userid]
+    );
+
+    if (rowCount === 0) {
+      return callback({
+        code: grpc.status.NOT_FOUND,
+        details: `User with ID ${userid} not found.`,
+      });
+    }
+
+    const dbUser = rows[0];
+    const userResponse = {
+        id: dbUser.id,
+        username: dbUser.username,
+        email: dbUser.email,
+        img: dbUser.profile_image 
+    };
+
+    callback(null, { user: userResponse });
+
+  } catch (error) {
+    console.error("Database Error:", error);
+    callback({
+        code: grpc.status.INTERNAL,
+        details: "Database error while updating user"
+    });
+  }
+  },
 };
 
 module.exports = userImplementation;
