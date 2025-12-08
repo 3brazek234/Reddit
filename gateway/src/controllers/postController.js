@@ -2,7 +2,8 @@ const { postClient } = require("../grpcClient");
 
 const createPost = async (req, res) => {
   try {
-    const { post } = req.body;
+    const { title, description, subreddit_id } = req.body;
+    const post = { title, description, author: req.user.id, subreddit_id };
     const { id } = await postClient.createPost({ post });
     res.status(201).json({ success: true, data: id });
   } catch (error) {
