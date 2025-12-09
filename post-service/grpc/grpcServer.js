@@ -1,21 +1,25 @@
+// D:\microservices\Reddit\post-service\grpc\grpcServer.js
 const grpc = require("@grpc/grpc-js");
 const server = new grpc.Server();
 
-exports.startGrpcServer = function () {
-  server.bindAsync(
-    "127.0.0.1:50051",
-    grpc.ServerCredentials.createInsecure(),
-    (error, port) => {
-      if (error) {
-        console.error("Failed to bind gRPC server:", error);
-      } else {
-        console.log(`gRPC server running at http://127.0.0.1:${port}`);
-        server.start();
-      }
-    }
-  );
-};
+exports.startGrpcServer = function (serviceDefinition, serviceImplementation) {
+  try {
+    server.addService(serviceDefinition, serviceImplementation);
+    console.log("✅ Service added to gRPC server.");
 
-exports.getGrpcServer = function () {
-  return server;
+    server.bindAsync(
+      "0.0.0.0:50055", 
+      grpc.ServerCredentials.createInsecure(),
+      (error, port) => {
+        if (error) {
+          console.error("❌ Failed to bind gRPC server:", error);
+          return;
+        }
+        console.log(`🚀 Post Service is running at http://0.0.0.0:${port}`);
+          // server.start(); // مش محتاجينها في النسخ الجديدة
+      }
+    );
+  } catch (err) {
+    console.error("❌ Critical Error during server startup:", err.message);
+  }
 };

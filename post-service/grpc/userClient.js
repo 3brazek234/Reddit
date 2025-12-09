@@ -3,7 +3,7 @@ const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 const path = require("path");
 
-const USER_PROTO_PATH = path.resolve(__dirname, "../protos/post.proto");
+const USER_PROTO_PATH = path.resolve(__dirname, "../protos/user.proto");
 
 const packageDefinition = protoLoader.loadSync(USER_PROTO_PATH, {
   keepCase: true,

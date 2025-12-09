@@ -11,13 +11,12 @@ const postSchema = new mongoose.Schema({
     required: true
   },
 author: {
-    type: String,
+    type: Number,
     required: true
   },
   subreddit: { 
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Subreddit', 
-    required: true
+    type: Number,
+    ref: 'Subreddit'
   },
 }, {
   timestamps: true 

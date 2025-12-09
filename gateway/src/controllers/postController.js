@@ -1,13 +1,32 @@
 const { postClient } = require("../grpcClient");
-
 const createPost = async (req, res) => {
   try {
     const { title, description, subreddit_id } = req.body;
-    const post = { title, description, author: req.user.id, subreddit_id };
-    const { id } = await postClient.createPost({ post });
-    res.status(201).json({ success: true, data: id });
+    const postPayload = {
+      title: title,
+      description: description,
+      authorId: Number(req.user.id),       
+      subreddit_id: Number(subreddit_id) 
+    };
+
+    console.log("Creating post with payload:", postPayload);
+
+
+    postClient.createPost({ post: postPayload }, (err, response) => {
+      if (err) {
+        console.error("gRPC Error creating post:", err);
+        return res.status(500).json({ 
+            success: false, 
+            error: "Failed to create post via gRPC",
+            details: err.message 
+        });
+      }
+
+      res.status(201).json({ success: true, data: response });
+    });
+
   } catch (error) {
-    console.error("Error creating post:", error);
+    console.error("Controller Error:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };

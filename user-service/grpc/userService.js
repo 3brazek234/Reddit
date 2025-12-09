@@ -11,7 +11,7 @@ const userImplementation = {
     const { email, password } = call.request;
     try {
       const { rows } = await db.query(
-        `SELECT email, username, password FROM users WHERE email =$1`,
+        `SELECT  id, email, username, password FROM users WHERE email =$1`,
         [email]
       );
       if (rows.length <= 0) {
@@ -27,6 +27,7 @@ const userImplementation = {
           details: "wrong password",
         });
       }
+      console.log(`Generating token for user ID: ${rows[0].id}, Email: ${rows[0].email}`);
       const token = generateToken.generateToken(rows[0]);
 
       return callback(null, { token });
@@ -127,13 +128,9 @@ const userImplementation = {
   isAuthenticated: async (call, callback) => {
     const userToken = call.request.token;
     try {
-      // 1. فك تشفير التوك
       const decoded = jwt.verify(userToken, process.env.JWT_SECRET);
 
-      // 🚨 خطوة مهمة جداً للـ Debugging: اطبع شكل البيانات اللي راجعة من التوكن
       console.log("Decoded JWT Payload:", decoded);
-
-      // 2. تجهيز كائن المستخدم حسب تعريف الـ Proto بالظبط
 
       const userProtoObj = {
         email: decoded.email,

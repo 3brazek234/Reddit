@@ -1,7 +1,6 @@
 const express = require("express");
 require("dotenv").config();
 
-// ... باقي الكود زي ما هو
 const authRoutes = require("./src/routes/authRoutes");
 const cors = require("cors");
 const imgUploadRoute = require("./src/routes/uploadRoute");

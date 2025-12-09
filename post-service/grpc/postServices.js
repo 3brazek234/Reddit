@@ -6,14 +6,11 @@ const Comment = require("../models/comment");
 const Like = require("../models/like");
 
 const postServices = {
-  // --- دوال الـ Post الأساسية (create, get, update) ---
-  // (تم تعديلها لتتوافق مع Mongoose)
 
   createPost: async (call, callback) => {
-    const { title, authorId, subreddit_id, description } = call.request;
+    const { title, authorId, subreddit_id, description } = call.request.post;
 
-    // تحقق من وجود البيانات
-    if (!title || !authorId || !subreddit_id) {
+    if (!title || !authorId ) {
       return callback({
         code: grpc.status.INVALID_ARGUMENT,
         details: "Missing required fields (title, authorId, subredditId).",
@@ -21,16 +18,15 @@ const postServices = {
     }
 
     try {
-      // استخدام Mongoose لإنشاء البوست
       const newPost = new Post({
         title,
         content: description, // الموديل بتاعك فيه content مش description
-        author: authorId, // الموديل بتاعك فيه author
-        subreddit: subreddit_id, // الموديل بتاعك فيه subreddit
+        author: authorId, 
+        subreddit: subreddit_id,
       });
       await newPost.save();
-
-      return callback(null, { post: newPost.toObject() });
+     console.log(newPost)
+      return callback(null, { post: newPost});
     } catch (error) {
       console.error("Error creating post:", error);
 
@@ -136,14 +132,11 @@ const postServices = {
     }
   },
 
-  // --- دوال التفاعل (Like & Comment) ---
 
   likePost: async (call, callback) => {
-    // id هنا هو post_id, user_id هو من يقوم باللايك
     const { id: postId, user_id: userId } = call.request;
 
     try {
-      // 1. التأكد من وجود البوست أولاً
       const postExists = await Post.exists({ _id: postId });
       if (!postExists) {
         return callback({
@@ -151,22 +144,15 @@ const postServices = {
           details: `Post with ID ${postId} not found.`,
         });
       }
-
-      // 2. محاولة إنشاء لايك جديد
-      // الـ unique index في الـ Like schema هيمنع التكرار
       const newLike = new Like({
         user: userId,
         target: postId,
-        targetModel: "Post", // نحدد أن الهدف هو بوست
+        targetModel: "Post",
       });
 
       await newLike.save();
-
-      // الرد بالنجاح (ممكن ترجع true أو كائن اللايك)
-      // نفترض الـ proto يتوقع success boolean
       return callback(null, { success: true });
     } catch (error) {
-      // التعامل مع خطأ التكرار (Duplicate Key Error)
       if (error.code === 11000) {
         return callback(null, { success: true, message: "Already liked." });
       }

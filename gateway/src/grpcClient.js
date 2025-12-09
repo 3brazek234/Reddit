@@ -9,7 +9,7 @@ const USER_PROTO_PATH = path.join(__dirname, "../protos/user.proto");
 const POST_PROTO_PATH = path.join(__dirname, "../protos/post.proto");
 const SUBREDDIT_PROTO_PATH = path.join(__dirname, "../protos/subreddit.proto");
 console.log(USER_PROTO_PATH);
-// إعدادات التحميل المشتركة
+
 const loaderOptions = {
   keepCase: true,
   longs: String,
